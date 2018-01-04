@@ -17,12 +17,12 @@ homeassistant:
   customize:
     group.scenes:
 	  custom_ui_state_card: state-card-custom_scene
-	  config:
-		entities:
-		  - entity: script.scene_movie
+		config:
+			entities:
+			- entity: script.scene_movie
 			friendly_name: Movie
-		  - entity: script.scene_romance
+			- entity: script.scene_romance
 			friendly_name: Romance
-		  - entity: script.scene_chill
+			- entity: script.scene_chill
 			friendly_name: Chill
  ```
