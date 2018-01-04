@@ -1,0 +1,62 @@
+<dom-module id="state-card-custom_scene">
+  <template>
+    <style is="custom-style" include="iron-flex iron-flex-alignment"></style>
+    <style>
+      :host {
+        line-height: 1.5;
+      }
+      paper-button {
+        min-width: 30px;
+        height: 20px;
+        margin: 10px 2px 10px 2px;
+        padding: 0 0 0 0;
+      }
+    </style>
+<div class='horizontal justified layout'>
+  <state-info state-obj="[[stateObj]]"></state-info>
+  <paper-button-group on-tap="stopPropagation">
+    <template is="dom-repeat" items="[[config.entities]]" as="entity">
+      <paper-button on-tap="callService">
+        [[entity.friendly_name]]
+      </paper-button>
+    </template>
+  </paper-button-group>
+</div>
+</template>
+</dom-module>
+<script>
+    Polymer({
+      is: 'state-card-custom_scene',
+      properties: {
+        hass: {
+          type: Object,
+        },
+        stateObj: {
+          type: Object,
+        },
+        config: {
+          type: Object,
+          computed: 'computeConfig(stateObj)',
+        },
+      },
+
+      computeConfig: function (stateObj) {     
+        return stateObj.attributes.config;
+      },
+
+      ready: function () {
+        var config = this.config;
+      },
+
+      callService: function (e) {
+        var entity = e.model.entity.entity;
+        var domain = entity.split('.')[0];
+        var service = entity.split('.')[1];
+        var data = e.model.entity.data ? (e.model.entity.data) : {};       
+        this.hass.callService(domain, service, data);
+      },
+      stopPropagation: function (e) {
+        e.stopPropagation();
+    },  
+  });
+</script>
