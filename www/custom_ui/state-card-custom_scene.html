@@ -2,21 +2,24 @@
   <template>
     <style is="custom-style" include="iron-flex iron-flex-alignment"></style>
     <style>
-      :host {
-        line-height: 1.5;
-      }
       paper-button {
-        min-width: 30px;
-        height: 20px;
-        margin: 10px 2px 10px 2px;
-        padding: 0 0 0 0;
+        font-weight: 500;
+        top: 3px;
+        height: 37px;
+        margin-right: -.57em;
+      }
+      paper-button.on {
+        color: var(--primary-color);
+      }
+      paper-button.off {
+        color: var(--primary-text-color);
       }
     </style>
 <div class='horizontal justified layout'>
   <state-info state-obj="[[stateObj]]"></state-info>
   <paper-button-group on-tap="stopPropagation">
     <template is="dom-repeat" items="[[config.entities]]" as="entity">
-      <paper-button on-tap="callService">
+      <paper-button raised class$="[[computeStateClass(entity)]]" onTap="callService">
         [[entity.friendly_name]]
       </paper-button>
     </template>
@@ -42,6 +45,10 @@
 
       computeConfig: function (stateObj) {     
         return stateObj.attributes.config;
+      },
+
+      computeStateClass: function (entity) {     
+        return (this.hass.states[entity.state].state === 'on') ? 'on' : 'off';
       },
 
       ready: function () {
