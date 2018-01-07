@@ -21,11 +21,11 @@ customize:
       entities:
         - entity: script.scene_movie
           friendly_name: Movie
-		  state: binary_sensor.scene_movie_state
+          state: binary_sensor.scene_movie_state
         - entity: script.scene_romance
           friendly_name: Romance
-		  state: binary_sensor.scene_romance_state
+          state: binary_sensor.scene_romance_state
         - entity: script.scene_chill
           friendly_name: Chill
-		  state: binary_sensor.scene_chill_state
+          state: binary_sensor.scene_chill_state
  ```
