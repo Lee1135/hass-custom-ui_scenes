@@ -19,7 +19,7 @@
   <state-info state-obj="[[stateObj]]"></state-info>
   <paper-button-group on-tap="stopPropagation">
     <template is="dom-repeat" items="[[config.entities]]" as="entity">
-      <paper-button raised class$="[[computeStateClass(entity)]]" onTap="callService">
+      <paper-button raised class$="[[computeStateClass(hass, entity)]]" onTap="callService">
         [[entity.friendly_name]]
       </paper-button>
     </template>
@@ -47,8 +47,8 @@
         return stateObj.attributes.config;
       },
 
-      computeStateClass: function (entity) {     
-        return (this.hass.states[entity.state].state === 'on') ? 'on' : 'off';
+      computeStateClass: function (hass, entity) {     
+        return (hass.states[entity.state].state === 'on') ? 'on' : 'off';
       },
 
       ready: function () {
