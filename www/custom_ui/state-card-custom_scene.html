@@ -1,69 +1,74 @@
 <dom-module id="state-card-custom_scene">
-  <template>
-    <style is="custom-style" include="iron-flex iron-flex-alignment"></style>
-    <style>
-      paper-button {
-        font-weight: 500;
-        top: 3px;
-        height: 37px;
-        margin-right: -.57em;
-      }
-      paper-button.on {
-        color: var(--primary-color);
-      }
-      paper-button.off {
-        color: var(--primary-text-color);
-      }
-    </style>
-<div class='horizontal justified layout'>
-  <state-info state-obj="[[stateObj]]"></state-info>
-  <paper-button-group on-tap="stopPropagation">
-    <template is="dom-repeat" items="[[config.entities]]" as="entity">
-      <paper-button raised class$="[[computeStateClass(hass, entity)]]" onTap="callService">
-        [[entity.friendly_name]]
-      </paper-button>
-    </template>
-  </paper-button-group>
-</div>
-</template>
-</dom-module>
-<script>
-    Polymer({
-      is: 'state-card-custom_scene',
-      properties: {
-        hass: {
-          type: Object,
+    <template>
+      <style is="custom-style" include="iron-flex iron-flex-alignment"></style>
+      <style>
+        paper-button {
+          font-weight: 500;
+          top: 3px;
+          height: 37px;
+          margin-right: -.57em;
+        }
+        paper-button.on {
+          color: var(--primary-color);
+        }
+        paper-button.off {
+          color: var(--primary-text-color);
+        }
+      </style>
+  <div class='horizontal justified layout'>
+    <state-info state-obj="[[stateObj]]"></state-info>
+    <paper-button-group on-tap="stopPropagation">
+      <template is="dom-repeat" items="[[config.entities]]" as="entity">
+        <paper-button raised class$="[[computeStateClass(hass, entity)]]" onTap="callService">
+          <template is="dom-if" if="[[entity.icon]]">
+            <iron-icon icon="[[entity.icon]]"></iron-icon>
+          </template>
+          <template is="dom-if" if="[[entity.friendly_name]]">
+              &nbsp;[[entity.friendly_name]]
+          </template>
+        </paper-button>
+      </template>
+    </paper-button-group>
+  </div>
+  </template>
+  </dom-module>
+  <script>
+      Polymer({
+        is: 'state-card-custom_scene',
+        properties: {
+          hass: {
+            type: Object,
+          },
+          stateObj: {
+            type: Object,
+          },
+          config: {
+            type: Object,
+            computed: 'computeConfig(stateObj)',
+          },
         },
-        stateObj: {
-          type: Object,
+  
+        computeConfig: function (stateObj) {     
+          return stateObj.attributes.config;
         },
-        config: {
-          type: Object,
-          computed: 'computeConfig(stateObj)',
+  
+        computeStateClass: function (hass, entity) {     
+          return (hass.states[entity.state].state === 'on') ? 'on' : 'off';
         },
-      },
-
-      computeConfig: function (stateObj) {     
-        return stateObj.attributes.config;
-      },
-
-      computeStateClass: function (hass, entity) {     
-        return (hass.states[entity.state].state === 'on') ? 'on' : 'off';
-      },
-
-      ready: function () {
-        var config = this.config;
-      },
-
-      callService: function (e) {
-        var entity = e.model.entity.entity;
-        var domain = entity.split('.')[0];
-        var service = entity.split('.')[1];
-        var data = e.model.entity.data ? (e.model.entity.data) : {};       
-        this.hass.callService(domain, service, data);
-      },
-      stopPropagation: function (e) {
-        e.stopPropagation();
-    },  
-  });
-</script>
+  
+        ready: function () {
+          var config = this.config;
+        },
+  
+        callService: function (e) {
+          var entity = e.model.entity.entity;
+          var domain = entity.split('.')[0];
+          var service = entity.split('.')[1];
+          var data = e.model.entity.data ? (e.model.entity.data) : {};       
+          this.hass.callService(domain, service, data);
+        },
+        stopPropagation: function (e) {
+          e.stopPropagation();
+      },  
+    });
+  </script>

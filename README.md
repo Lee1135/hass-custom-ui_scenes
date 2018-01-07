@@ -20,12 +20,15 @@ customize:
     config:
       entities:
         - entity: script.scene_movie
-          friendly_name: Movie
+          friendly_name: Movie #define icon and friendly_name or both
+          icon: mdi:movie #define icon and friendly_name or both
           state: binary_sensor.scene_movie_state
         - entity: script.scene_romance
-          friendly_name: Romance
+          friendly_name: Romance #define icon and friendly_name or both
+          icon: mdi:heart #define icon and friendly_name or both
           state: binary_sensor.scene_romance_state
         - entity: script.scene_chill
-          friendly_name: Chill
+          friendly_name: Chill #define icon and friendly_name or both
+          icon: mdi:sunglasses #define icon and friendly_name or both
           state: binary_sensor.scene_chill_state
  ```
