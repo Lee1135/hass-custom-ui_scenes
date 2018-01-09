@@ -26,12 +26,30 @@ customize:
           friendly_name: Movie #define icon and friendly_name or both
           icon: mdi:movie #define icon and friendly_name or both
           state: binary_sensor.scene_movie_state # the binary sensor to determine the current state
-        - entity: script.scene_romance
-          friendly_name: Romance
-          icon: mdi:heart
-          state: binary_sensor.scene_romance_state
-        - entity: script.scene_chill
-          friendly_name: Chill
-          icon: mdi:sunglasses
-          state: binary_sensor.scene_chill_state
  ```
+
+```yaml
+binary_sensor:
+- platform: mqtt
+  state_topic: "hass/script/scenes/movie_state"
+  name: script_scene_movie_state
+  payload_on: "ON"
+  payload_off: "OFF"
+```
+
+```yaml
+script:
+  scene_movie:
+    sequence:
+      - service: light.turn_on
+        data:
+          entity_id: light.ceilinglight
+          transition: 1
+          brightness: 80
+          color_temp: 360
+      - service: mqtt.publish
+        data:
+          topic: "hass/script/scenes/movie_state"
+          payload: 'ON'
+          retain: 'true'
+```
