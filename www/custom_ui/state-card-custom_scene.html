@@ -17,9 +17,8 @@
     </style>
 <div class='horizontal justified layout'>
   <state-info state-obj="[[stateObj]]"></state-info>
-  <paper-button-group on-tap="stopPropagation">
     <template is="dom-repeat" items="[[config.entities]]" as="entity">
-      <paper-button raised class$="[[computeStateClass(hass, entity)]]" on-Tap="callService">
+      <paper-button raised class$="[[computeStateClass(hass, entity)]]" on-tap="handleFireServiceTap">
         <template is="dom-if" if="[[entity.icon]]">
           <iron-icon icon="[[entity.icon]]"></iron-icon>
         </template>
@@ -28,14 +27,15 @@
         </template>
       </paper-button>
     </template>
-  </paper-button-group>
 </div>
 </template>
 </dom-module>
 <script>
-    Polymer({
-      is: 'state-card-custom_scene',
-      properties: {
+class StateCardCustomScene extends Polymer.Element {
+  static get is() { return 'state-card-custom_scene'; }
+
+  static get properties() {
+      return {
         hass: {
           type: Object,
         },
@@ -46,21 +46,25 @@
           type: Object,
           computed: 'computeConfig(stateObj)',
         },
-      },
+      };
+  }
 
-      computeConfig: function (stateObj) {     
-        return stateObj.attributes.config;
-      },
+  computeConfig(stateObj) {     
+    return stateObj.attributes.config;
+  }
 
-      computeStateClass: function (hass, entity) {     
-        return (hass.states[entity.state].state === 'on') ? 'on' : 'off';
-      },
+  computeStateClass(hass, entity) {     
+    return (hass.states[entity.state].state === 'on') ? 'on' : 'off';
+  }
 
-      callService: function() {
-        this.hass.callService('script', 'turn_on', { entity_id: this.stateObj.entity_id });
-      },
-      stopPropagation: function (e) {
-        e.stopPropagation();
-      },  
-  });
+  handleFireServiceTap(ev) {
+    ev.stopPropagation();
+    this.callService(ev.model.entity.entity);
+  }
+
+  callService(entity_id) {
+    this.hass.callService('script', 'turn_on', { entity_id: entity_id });
+  }
+}
+customElements.define(StateCardCustomScene.is, StateCardCustomScene);
 </script>
