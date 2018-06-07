@@ -18,8 +18,11 @@
 <div class='horizontal justified layout'>
   <state-info state-obj="[[stateObj]]"></state-info>
     <template is="dom-repeat" items="[[config.entities]]" as="entity">
-       <div class="attributes" on-click="attributeClicked">
-       </div>
+      <div class="attributes" on-click="attributeClicked">
+        <div><iron-icon icon="[[entity.icon]]"></iron-icon></div>
+        <span>[[entity.state]]</span>
+        <span>[[entity.attributes.unit_of_measurement]]</span>
+      </div>
     </template>
 </div>
 </template>
