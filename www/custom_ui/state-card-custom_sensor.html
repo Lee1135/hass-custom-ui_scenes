@@ -1,0 +1,62 @@
+<dom-module id="state-card-custom_sensor">
+  <template>
+    <style is="custom-style" include="iron-flex iron-flex-alignment"></style>
+    <style>
+      paper-button {
+        font-weight: 500;
+        top: 3px;
+        height: 37px;
+        margin-right: -.57em;
+      }
+      paper-button.on {
+        color: var(--primary-color);
+      }
+      paper-button.off {
+        color: var(--primary-text-color);
+      }
+    </style>
+<div class='horizontal justified layout'>
+  <state-info state-obj="[[stateObj]]"></state-info>
+    <template is="dom-repeat" items="[[config.entities]]" as="entity">
+       <div class="attributes" on-click="attributeClicked">
+       </div>
+    </template>
+</div>
+</template>
+</dom-module>
+<script>
+class StateCardCustomSensor extends Polymer.Element {
+  static get is() { return 'state-card-custom_sensor'; }
+  static get properties() {
+      return {
+        hass: {
+          type: Object,
+        },
+        stateObj: {
+          type: Object,
+        },
+        config: {
+          type: Object,
+          computed: 'computeConfig(stateObj)',
+        },
+      };
+  }
+  computeConfig(stateObj) {     
+    return stateObj.attributes.config;
+  }
+  computeStateClass(hass, entity) {     
+    return (hass.states[entity.state].state === 'on') ? 'on' : 'off';
+  }
+  handleFireServiceTap(ev) {
+    ev.stopPropagation();
+    this.callService(ev.model.entity.entity);
+  }
+  attributeClicked(ev) {
+    this.fire('hass-more-info', { entityId: ev.model.entity.entity });
+  }
+  callService(entity_id) {
+    this.hass.callService('script', 'turn_on', { entity_id: entity_id });
+  }
+}
+customElements.define(StateCardCustomSensor.is, StateCardCustomSensor);
+</script>
