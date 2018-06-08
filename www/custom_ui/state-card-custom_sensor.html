@@ -11,7 +11,7 @@
     </style>
 <div class='horizontal justified layout'>
   <state-info state-obj="[[stateObj]]"></state-info>
-    <template is="dom-repeat" items="[[config.entities]]" as="entity">
+    <template is="dom-repeat" items="[[stateObj.attributes.entity_id]]" as="entity">
       <div class="attributes" on-click="attributeClicked">
         <div><iron-icon icon="[[entity.icon]]"></iron-icon></div>
         <span>[[entity.state]]</span>
@@ -39,7 +39,7 @@ class StateCardCustomSensor extends Polymer.Element {
       };
   }
   computeConfig(stateObj) {     
-    return stateObj.attributes.config;
+    return stateObj.attributes.entity_id;
   }
   computeStateClass(hass, entity) {     
     return (hass.states[entity.state].state === 'on') ? 'on' : 'off';
