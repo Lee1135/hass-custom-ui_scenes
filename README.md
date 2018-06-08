@@ -53,3 +53,19 @@ script:
           payload: 'ON'
           retain: 'true'
 ```
+configuration.yaml
+
+input_boolean:
+   sensor1:
+   sensor2:
+   
+homeassistant:
+  customize:
+    input_boolean.sensor1:
+      custom_ui_state_card: state-card-custom_sensor
+      config:
+        entities: 
+          -sensor.bedroom_temp
+          -sensor.bedroom_humidity
+          
+          
