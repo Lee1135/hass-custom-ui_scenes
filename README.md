@@ -53,7 +53,10 @@ script:
           payload: 'ON'
           retain: 'true'
 ```
+
 configuration.yaml
+
+```yaml
 
 input_boolean:
    sensor1:
@@ -67,5 +70,5 @@ homeassistant:
         entities: 
           -sensor.bedroom_temp
           -sensor.bedroom_humidity
-          
+ ```        
           
