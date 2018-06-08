@@ -65,6 +65,8 @@ input_boolean:
 homeassistant:
   customize:
     input_boolean.sensor1:
+      icon: mdi:thermometer-lines
+      friendly_name: sensor1
       custom_ui_state_card: state-card-custom_sensor
       config:
         entities: 
